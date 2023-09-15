@@ -1,8 +1,6 @@
 .credit-card-box {
   width: 500px;
   height: 230px;
-  border-radius: 12px;
-  background: white;
   position: relative;
 
   .front {
@@ -13,8 +11,8 @@
     color: #fff;
     top: 10px;
     left: 0;
-    text-shadow: 0 1px 1px hsla(0, 0, 0, 0.3);
-    box-shadow: 0 1px 6px hsla(0, 0, 0, 0.3);
+    text-shadow: 0 1px 1px rgba(0, 0, 0, 0.3);
+    box-shadow: 0 1px 6px rgba(0, 0, 0, 0.3);
     overflow: hidden;
     border-radius: 18px;
     z-index: 2;
@@ -61,8 +59,8 @@
     color: #fff;
     top: 0;
     left: 100px;
-    text-shadow: 0 1px 1px hsla(0, 0, 0, 0.3);
-    box-shadow: 0 1px 6px hsla(0, 0, 0, 0.3);
+    text-shadow: 0 1px 1px rgba(0, 0, 0, 0.3);
+    box-shadow: 0 1px 6px rgba(0, 0, 0, 0.3);
     overflow: hidden;
     border-radius: 18px;
     transition: all 0.5s;

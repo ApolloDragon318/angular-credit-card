@@ -121,7 +121,7 @@
   <app-success
     *ngIf="page === 1"
     (goBackEvent)="onGoBackClciked($event)"
-    [paymentID]="1"
+    [paymentID]="payment?.id"
   ></app-success>
 </div>
 <!-- * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * -->

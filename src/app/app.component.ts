@@ -31,37 +31,39 @@ export class AppComponent {
 
   createForm() {
     this.cardForm = this.fb.group({
-      number: [
-        '',
-        {
-          validators: [
-            Validators.required,
-            Validators.pattern('^[0-9]{15,16}$'),
-          ],
-          updateOn: 'change',
-        },
-      ],
-      firstName: ['', [Validators.required, Validators.pattern('^[a-zA-Z]+$')]],
-      lastName: ['', [Validators.required, Validators.pattern('^[a-zA-Z]+$')]],
-      expirationDate: [
-        '',
-        [
-          Validators.required,
-          Validators.pattern('^(0[1-9]|1[0-2]) / [0-9][0-9]$'),
-        ],
-      ],
-      cvv: ['', [Validators.required, Validators.pattern('^[0-9]{3,4}$')]],
-      zipcode: [
-        '',
-        [Validators.required, Validators.pattern('^[0-9]{5}(?:-[0-9]{4})?$')],
-      ],
+      number: this.fb.control('', {
+        validators: [Validators.required, Validators.pattern('^[0-9]{15,16}$')],
+        updateOn: 'change',
+      }),
+      firstName: this.fb.control('', [
+        Validators.required,
+        Validators.pattern('^[a-zA-Z]+$'),
+      ]),
+      lastName: this.fb.control('', [
+        Validators.required,
+        Validators.pattern('^[a-zA-Z]+$'),
+      ]),
+      expirationDate: this.fb.control('', [
+        Validators.required,
+        Validators.pattern('^(0[1-9]|1[0-2]) / [0-9][0-9]$'),
+      ]),
+      cvv: this.fb.control('', [
+        Validators.required,
+        Validators.pattern('^[0-9]{3,4}$'),
+      ]),
+      zipcode: this.fb.control('', [
+        Validators.required,
+        Validators.pattern('^[0-9]{5}(?:-[0-9]{4})?$'),
+      ]),
     });
   }
 
   submitForm() {
     this.submitHistoryFlag = true;
+
     if (this.cardForm.valid) {
       this.loading = true;
+
       const payload = {
         number: this.cardForm.value.number,
         name: `${this.cardForm.value.firstName} ${this.cardForm.value.lastName}`,
@@ -93,23 +95,21 @@ export class AppComponent {
   }
 
   @HostListener('input', ['$event']) onInputChange(event) {
-    // card number validation
     if (event.target.id === 'number') {
-      const initialValue = this.cardForm.value.number;
-      this.cardForm.controls['number'].setValue(
-        initialValue.replace(/[^0-9]*/g, '')
-      );
-      if (this.cardForm.controls['number'].value.length > 16) {
-        this.cardForm.controls['number'].setValue(
-          this.cardForm.controls['number'].value.slice(0, 16)
-        );
+      // Card number validation
+      const numberInput = this.cardForm.controls['number'];
+      const initialValue = numberInput.value;
+      const sanitizedValue = initialValue.replace(/[^0-9]*/g, '');
+      numberInput.setValue(sanitizedValue);
+
+      if (sanitizedValue.length > 16) {
+        numberInput.setValue(sanitizedValue.slice(0, 16));
         event.stopPropagation();
       }
-      if (this.cardForm.controls['number'].value.length >= 15) {
-        const value = this.cardForm.controls['number'].value
-          .split('')
-          .map((val: string) => +val);
-        const sum: number = value.reduce(
+
+      if (sanitizedValue.length >= 15) {
+        const value = sanitizedValue.split('').map((val: string) => +val);
+        const sum = value.reduce(
           (sum: number, val: number, i: number) =>
             i < value.length - 1
               ? i % 2 === 0
@@ -118,67 +118,82 @@ export class AppComponent {
               : sum,
           0
         );
-        if ((sum + value[value.length - 1]) % 10 > 0)
-          this.cardForm.controls['number'].setErrors({ Luhn: 'Luhn error' });
+
+        if ((sum + value[value.length - 1]) % 10 > 0) {
+          numberInput.setErrors({ Luhn: 'Luhn error' });
+        }
       }
-      if (initialValue !== this.cardForm.value.number) {
+
+      if (initialValue !== sanitizedValue) {
         event.stopPropagation();
       }
     }
-    // expiration format and validation
+
     if (event.target.id === 'expirationDate') {
-      const initialValue = this.cardForm.value.expirationDate;
+      // Expiration date format and validation
+      const expirationInput = this.cardForm.controls['expirationDate'];
+      const initialValue = expirationInput.value;
+
       if (
         initialValue.length === 5 &&
         event.inputType === 'deleteContentBackward'
-      )
-        this.cardForm.controls['expirationDate'].setValue(
-          initialValue.slice(0, 2)
-        );
-      if (initialValue.length === 2 && event.inputType === 'insertText')
-        this.cardForm.controls['expirationDate'].setValue(initialValue + ' / ');
-      if (this.cardForm.controls['expirationDate'].value.length > 7) {
-        this.cardForm.controls['expirationDate'].setValue(
-          this.cardForm.controls['expirationDate'].value.slice(0, 7)
-        );
+      ) {
+        expirationInput.setValue(initialValue.slice(0, 2));
+      }
+
+      if (initialValue.length === 2 && event.inputType === 'insertText') {
+        expirationInput.setValue(initialValue + ' / ');
+      }
+
+      if (expirationInput.value.length > 7) {
+        expirationInput.setValue(expirationInput.value.slice(0, 7));
         event.stopPropagation();
       }
-      if (initialValue !== this.cardForm.value.expirationDate) {
+
+      if (initialValue !== expirationInput.value) {
         event.stopPropagation();
       }
     }
-    // cvv validation
+
     if (event.target.id === 'cvv') {
-      const initialValue = this.cardForm.value.cvv;
-      if (this.cardForm.controls['cvv'].value.length > 4) {
-        this.cardForm.controls['cvv'].setValue(
-          this.cardForm.controls['cvv'].value.slice(0, 4)
-        );
+      // CVV validation
+      const cvvInput = this.cardForm.controls['cvv'];
+      const initialValue = cvvInput.value;
+
+      if (cvvInput.value.length > 4) {
+        cvvInput.setValue(cvvInput.value.slice(0, 4));
         event.stopPropagation();
       }
-      if (initialValue !== this.cardForm.value.cvv) {
+
+      if (initialValue !== cvvInput.value) {
         event.stopPropagation();
       }
     }
-    // zipcode validation
+
     if (event.target.id === 'zipcode') {
-      const initialValue = this.cardForm.value.zipcode;
+      // Zip code validation
+      const zipcodeInput = this.cardForm.controls['zipcode'];
+      const initialValue = zipcodeInput.value;
+
       if (
         initialValue.length === 6 &&
         event.inputType === 'deleteContentBackward'
-      )
-        this.cardForm.controls['zipcode'].setValue(initialValue.slice(0, 5));
-      if (initialValue.length === 6 && event.inputType === 'insertText')
-        this.cardForm.controls['zipcode'].setValue(
+      ) {
+        zipcodeInput.setValue(initialValue.slice(0, 5));
+      }
+
+      if (initialValue.length === 6 && event.inputType === 'insertText') {
+        zipcodeInput.setValue(
           initialValue.slice(0, 5) + '-' + initialValue.slice(5, 6)
         );
-      if (this.cardForm.controls['zipcode'].value.length > 10) {
-        this.cardForm.controls['zipcode'].setValue(
-          this.cardForm.controls['zipcode'].value.slice(0, 10)
-        );
+      }
+
+      if (zipcodeInput.value.length > 10) {
+        zipcodeInput.setValue(zipcodeInput.value.slice(0, 10));
         event.stopPropagation();
       }
-      if (initialValue !== this.cardForm.value.zipcode) {
+
+      if (initialValue !== zipcodeInput.value) {
         event.stopPropagation();
       }
     }
