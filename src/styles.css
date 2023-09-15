@@ -1,1 +1,16 @@
 /* You can add global styles to this file, and also import other style files */
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+html,
+body {
+  font-family: sans-serif;
+}
+
+:root {
+  --button-color: #00ff00;
+  --card-color: #007055;
+  --card-back-color: #212121;
+  --card-text-color: #fff;
+}
