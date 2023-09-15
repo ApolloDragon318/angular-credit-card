@@ -25,204 +25,68 @@
       validate
     >
       <div class="flex gap-6">
-        <div class="flex-2">
-          <label
-            for="card-number"
-            class="block text-sm font-medium text-gray-700 mb-2"
-            [ngClass]="[
-              !submitHistoryFlag
-                ? 'text-black-700 dark:text-black-500'
-                : cardForm.controls['number'].errors !== null
-                ? 'text-red-700 dark:text-red-500'
-                : 'text-green-700 dark:text-green-500'
-            ]"
-            >Credit Card Number</label
-          >
-          <input
-            type="text"
-            name="card-number"
-            id="card-number"
-            placeholder="XXXX XXXX XXXX XXXX"
-            class="w-full py-3 px-4 border border-gray-400 rounded-lg focus:outline-none focus:border-blue-500"
-            data-test-id="number-input"
-            autocomplete="off"
-            formControlName="number"
-            [ngClass]="[
-              !submitHistoryFlag
-                ? 'bg-black-50 border-black-500 text-black-900 placeholder-black-700 focus:ring-black-500 focus:border-black-500 dark:bg-black-100 dark:border-black-400'
-                : cardForm.controls['number'].errors !== null
-                ? 'bg-red-50 border-red-500 text-red-900 placeholder-red-700 focus:ring-red-500 focus:border-red-500 dark:bg-red-100 dark:border-red-400'
-                : 'bg-green-50 border-green-500 text-green-900 placeholder-green-700 focus:ring-green-500 focus:border-green-500 dark:bg-green-100 dark:border-green-400'
-            ]"
-            (focus)="focusProcess('number')"
-            (focusout)="focusProcess('')"
-          />
-        </div>
-        <div class="flex-1">
-          <label
-            for="expiration-date"
-            class="block text-sm font-medium text-gray-700 mb-2"
-            [ngClass]="[
-              !submitHistoryFlag
-                ? 'text-black-700 dark:text-black-500'
-                : cardForm.controls['expirationDate'].errors !== null
-                ? 'text-red-700 dark:text-red-500'
-                : 'text-green-700 dark:text-green-500'
-            ]"
-            >Expiration Date</label
-          >
-          <input
-            type="text"
-            name="expiration-date"
-            id="expiration-date"
-            placeholder="XX / XX"
-            class="w-full py-3 px-4 border border-gray-400 rounded-lg focus:outline-none focus:border-blue-500"
-            formControlName="expirationDate"
-            data-test-id="expiry-input"
-            autocomplete="off"
-            [ngClass]="[
-              !submitHistoryFlag
-                ? 'bg-black-50 border-black-500 text-black-900 placeholder-black-700 focus:ring-black-500 focus:border-black-500 dark:bg-black-100 dark:border-black-400'
-                : cardForm.controls['expirationDate'].errors !== null
-                ? 'bg-red-50 border-red-500 text-red-900 placeholder-red-700 focus:ring-red-500 focus:border-red-500 dark:bg-red-100 dark:border-red-400'
-                : 'bg-green-50 border-green-500 text-green-900 placeholder-green-700 focus:ring-green-500 focus:border-green-500 dark:bg-green-100 dark:border-green-400'
-            ]"
-            (focus)="focusProcess('expiration-date')"
-            (focusout)="focusProcess('')"
-          />
-        </div>
-        <div class="flex-1">
-          <label
-            for="cvv"
-            class="block text-sm font-medium text-gray-700 mb-2"
-            [ngClass]="[
-              !submitHistoryFlag
-                ? 'text-black-700 dark:text-black-500'
-                : cardForm.controls['cvv'].errors !== null
-                ? 'text-red-700 dark:text-red-500'
-                : 'text-green-700 dark:text-green-500'
-            ]"
-            >CVV</label
-          >
-          <input
-            type="text"
-            name="cvv"
-            id="cvv"
-            placeholder="XXX"
-            class="w-full py-3 px-4 border border-gray-400 rounded-lg focus:outline-none focus:border-blue-500"
-            formControlName="cvv"
-            autocomplete="off"
-            data-test-id="cvv-input"
-            [ngClass]="[
-              !submitHistoryFlag
-                ? 'bg-black-50 border-black-500 text-black-900 placeholder-black-700 focus:ring-black-500 focus:border-black-500 dark:bg-black-100 dark:border-black-400'
-                : cardForm.controls['cvv'].errors !== null
-                ? 'bg-red-50 border-red-500 text-red-900 placeholder-red-700 focus:ring-red-500 focus:border-red-500 dark:bg-red-100 dark:border-red-400'
-                : 'bg-green-50 border-green-500 text-green-900 placeholder-green-700 focus:ring-green-500 focus:border-green-500 dark:bg-green-100 dark:border-green-400'
-            ]"
-            (focus)="focusProcess('cvv')"
-            (focusout)="focusProcess('')"
-          />
-        </div>
+        <app-card-input
+          class="flex-2"
+          [submitHistoryFlag]="submitHistoryFlag"
+          [formGroup]="cardForm"
+          controlName="number"
+          label="Credit Card Number"
+          placeholder="XXXX XXXX XXXX XXXX"
+          (focusOnEmit)="focusProcess('number')"
+          (focusOutEmit)="focusProcess('')"
+        ></app-card-input>
+        <app-card-input
+          class="flex-1"
+          [submitHistoryFlag]="submitHistoryFlag"
+          [formGroup]="cardForm"
+          controlName="expirationDate"
+          label="Expiration Date"
+          placeholder="XX / XX"
+          (focusOnEmit)="focusProcess('expirationDate')"
+          (focusOutEmit)="focusProcess('')"
+        ></app-card-input>
+        <app-card-input
+          class="flex-1"
+          [submitHistoryFlag]="submitHistoryFlag"
+          [formGroup]="cardForm"
+          controlName="cvv"
+          label="CVV"
+          placeholder="XXX"
+          (focusOnEmit)="focusProcess('cvv')"
+          (focusOutEmit)="focusProcess('')"
+        ></app-card-input>
       </div>
       <div class="flex gap-6 mt-5">
-        <div class="flex-1">
-          <label
-            for="card-holder-first"
-            class="block text-sm font-medium text-gray-700 mb-2"
-            [ngClass]="[
-              !submitHistoryFlag
-                ? 'text-black-700 dark:text-black-500'
-                : cardForm.controls['firstName'].errors !== null
-                ? 'text-red-700 dark:text-red-500'
-                : 'text-green-700 dark:text-green-500'
-            ]"
-            >Cardholder's First Name</label
-          >
-          <input
-            type="text"
-            name="card-holder-first"
-            id="card-holder-first"
-            placeholder="First name"
-            class="w-full py-3 px-4 border border-gray-400 rounded-lg focus:outline-none focus:border-blue-500"
-            formControlName="firstName"
-            autocomplete="off"
-            data-test-id="first-name-input"
-            [ngClass]="[
-              !submitHistoryFlag
-                ? 'bg-black-50 border-black-500 text-black-900 placeholder-black-700 focus:ring-black-500 focus:border-black-500 dark:bg-black-100 dark:border-black-400'
-                : cardForm.controls['firstName'].errors !== null
-                ? 'bg-red-50 border-red-500 text-red-900 placeholder-red-700 focus:ring-red-500 focus:border-red-500 dark:bg-red-100 dark:border-red-400'
-                : 'bg-green-50 border-green-500 text-green-900 placeholder-green-700 focus:ring-green-500 focus:border-green-500 dark:bg-green-100 dark:border-green-400'
-            ]"
-            (focus)="focusProcess('name')"
-            (focusout)="focusProcess('')"
-          />
-        </div>
-        <div class="flex-1">
-          <label
-            for="card-holder-last"
-            class="block text-sm font-medium text-gray-700 mb-2"
-            [ngClass]="[
-              !submitHistoryFlag
-                ? 'text-black-700 dark:text-black-500'
-                : cardForm.controls['lastName'].errors !== null
-                ? 'text-red-700 dark:text-red-500'
-                : 'text-green-700 dark:text-green-500'
-            ]"
-            >Cardholdder's Last Name</label
-          >
-          <input
-            type="text"
-            name="card-holder-last"
-            id="card-holder-last"
-            placeholder="Last Name"
-            class="w-full py-3 px-4 border border-gray-400 rounded-lg focus:outline-none focus:border-blue-500"
-            formControlName="lastName"
-            autocomplete="off"
-            data-test-id="last-name-input"
-            [ngClass]="[
-              !submitHistoryFlag
-                ? 'bg-black-50 border-black-500 text-black-900 placeholder-black-700 focus:ring-black-500 focus:border-black-500 dark:bg-black-100 dark:border-black-400'
-                : cardForm.controls['lastName'].errors !== null
-                ? 'bg-red-50 border-red-500 text-red-900 placeholder-red-700 focus:ring-red-500 focus:border-red-500 dark:bg-red-100 dark:border-red-400'
-                : 'bg-green-50 border-green-500 text-green-900 placeholder-green-700 focus:ring-green-500 focus:border-green-500 dark:bg-green-100 dark:border-green-400'
-            ]"
-            (focus)="focusProcess('name')"
-            (focusout)="focusProcess('')"
-          />
-        </div>
-        <div class="flex-1">
-          <label
-            for="billing-zipcode"
-            class="block text-sm font-medium text-gray-700 mb-2"
-            [ngClass]="[
-              !submitHistoryFlag
-                ? 'text-black-700 dark:text-black-500'
-                : cardForm.controls['zipcode'].errors !== null
-                ? 'text-red-700 dark:text-red-500'
-                : 'text-green-700 dark:text-green-500'
-            ]"
-            >Billing Zip Code</label
-          >
-          <input
-            type="text"
-            name="billing-zipcode"
-            id="billing-zipcode"
-            placeholder="XXXXX"
-            formControlName="zipcode"
-            autocomplete="off"
-            data-test-id="billing-zipcode-input"
-            class="w-full py-3 px-4 border border-gray-400 rounded-lg focus:outline-none focus:border-blue-500"
-            [ngClass]="[
-              !submitHistoryFlag
-                ? 'bg-black-50 border-black-500 text-black-900 placeholder-black-700 focus:ring-black-500 focus:border-black-500 dark:bg-black-100 dark:border-black-400'
-                : cardForm.controls['zipcode'].errors !== null
-                ? 'bg-red-50 border-red-500 text-red-900 placeholder-red-700 focus:ring-red-500 focus:border-red-500 dark:bg-red-100 dark:border-red-400'
-                : 'bg-green-50 border-green-500 text-green-900 placeholder-green-700 focus:ring-green-500 focus:border-green-500 dark:bg-green-100 dark:border-green-400'
-            ]"
-          />
-        </div>
+        <app-card-input
+          class="flex-1"
+          [submitHistoryFlag]="submitHistoryFlag"
+          [formGroup]="cardForm"
+          controlName="firstName"
+          label="Cardholder's First Name"
+          placeholder="First name"
+          (focusOnEmit)="focusProcess('name')"
+          (focusOutEmit)="focusProcess('')"
+        ></app-card-input>
+        <app-card-input
+          class="flex-1"
+          [submitHistoryFlag]="submitHistoryFlag"
+          [formGroup]="cardForm"
+          controlName="lastName"
+          label="Cardholder's Last Name"
+          placeholder="First name"
+          (focusOnEmit)="focusProcess('name')"
+          (focusOutEmit)="focusProcess('')"
+        ></app-card-input>
+        <app-card-input
+          class="flex-1"
+          [submitHistoryFlag]="submitHistoryFlag"
+          [formGroup]="cardForm"
+          controlName="zipcode"
+          label="Billing Zip Code"
+          placeholder="XXXXX"
+          (focusOnEmit)="focusProcess('zipcode')"
+          (focusOutEmit)="focusProcess('')"
+        ></app-card-input>
       </div>
       <div class="mt-8">
         <button
@@ -230,8 +94,8 @@
           class="w-full bg-green-500 hover:bg-blue-600 text-white font-medium py-3 rounded-lg focus:outline-none"
           data-test-id="submit-button"
         >
-          <div *ngIf="!loading">Submit</div>
-          <div role="status" *ngIf="loading">
+          <div *ngIf="!loading; else elseBlock">Submit</div>
+          <ng-template #elseBlock role="status">
             <svg
               aria-hidden="true"
               class="inline w-8 h-8 mr-2 text-gray-200 animate-spin dark:text-gray-600 fill-green-500"
@@ -249,7 +113,7 @@
               />
             </svg>
             <span class="sr-only">Loading...</span>
-          </div>
+          </ng-template>
         </button>
       </div>
     </form>
@@ -257,7 +121,7 @@
   <app-success
     *ngIf="page === 1"
     (goBackEvent)="onGoBackClciked($event)"
-    [paymentID]="payment.id"
+    [paymentID]="1"
   ></app-success>
 </div>
 <!-- * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * -->

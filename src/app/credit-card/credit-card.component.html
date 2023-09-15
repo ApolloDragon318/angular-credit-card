@@ -1,22 +1,14 @@
 <div class="credit-card-box">
   <div
     class="front"
-    [ngClass]="
-      focusedName !== undefined && focusedName
-        ? 'brightness-50'
-        : 'brightness-100'
-    "
+    [ngClass]="focusedName ? 'brightness-50' : 'brightness-100'"
   >
     <div class="logo-red"></div>
     <div class="logo-yellow"></div>
   </div>
   <div
     class="back"
-    [ngClass]="
-      focusedName !== undefined && focusedName
-        ? 'brightness-50'
-        : 'brightness-100'
-    "
+    [ngClass]="focusedName ? 'brightness-50' : 'brightness-100'"
   >
     <div class="block"></div>
   </div>
@@ -25,7 +17,7 @@
     [ngClass]="
       focusedName === 'number'
         ? 'card-text-highlight-blue z-50'
-        : focusedName !== undefined && focusedName
+        : focusedName
         ? 'brightness-50'
         : 'brightness-100'
     "
@@ -35,7 +27,7 @@
   <div
     class="card-holder z-10"
     [ngClass]="
-      focusedName !== undefined && focusedName
+      focusedName
         ? focusedName !== 'name'
           ? 'brightness-50'
           : 'brightness-100'
@@ -49,8 +41,8 @@
   <div
     class="card-expiration-date z-10"
     [ngClass]="
-      focusedName !== undefined && focusedName
-        ? focusedName !== 'expiration-date'
+      focusedName
+        ? focusedName !== 'expirationDate'
           ? 'brightness-50'
           : 'brightness-100'
         : 'brightness-100'
@@ -58,13 +50,13 @@
   >
     <label
       [ngClass]="
-        focusedName === 'expiration-date' ? 'card-text-highlight-blue' : ''
+        focusedName === 'expirationDate' ? 'card-text-highlight-blue' : ''
       "
       >EXPIRY</label
     >
     <label
       [ngClass]="
-        focusedName === 'expiration-date' ? 'card-text-highlight-blue' : ''
+        focusedName === 'expirationDate' ? 'card-text-highlight-blue' : ''
       "
       >{{ cardExpirationDate.slice(0, 2) }} /
       {{ cardExpirationDate.slice(3, 5) }}</label
@@ -73,7 +65,7 @@
   <div
     class="card-cvv"
     [ngClass]="
-      focusedName !== undefined && focusedName
+      focusedName
         ? focusedName !== 'cvv'
           ? 'brightness-50'
           : 'brightness-100'

@@ -12,7 +12,7 @@ import { Input, initTE } from 'tw-elements';
 export class AppComponent {
   cardForm: FormGroup;
   page: Number;
-  payment: { id: Number };
+  payment: { id: number };
   loading: Boolean;
   submitHistoryFlag: Boolean;
   focusedName: string;
@@ -26,6 +26,7 @@ export class AppComponent {
     this.page = 0;
     this.loading = false;
     this.submitHistoryFlag = false;
+    this.focusedName = '';
   }
 
   createForm() {
@@ -59,14 +60,7 @@ export class AppComponent {
 
   submitForm() {
     this.submitHistoryFlag = true;
-    if (
-      this.cardForm.controls['number'].errors === null &&
-      this.cardForm.controls['firstName'].errors === null &&
-      this.cardForm.controls['lastName'].errors === null &&
-      this.cardForm.controls['expirationDate'].errors === null &&
-      this.cardForm.controls['cvv'].errors === null &&
-      this.cardForm.controls['zipcode'].errors === null
-    ) {
+    if (this.cardForm.valid) {
       this.loading = true;
       const payload = {
         number: this.cardForm.value.number,
@@ -100,7 +94,7 @@ export class AppComponent {
 
   @HostListener('input', ['$event']) onInputChange(event) {
     // card number validation
-    if (event.target.id === 'card-number') {
+    if (event.target.id === 'number') {
       const initialValue = this.cardForm.value.number;
       this.cardForm.controls['number'].setValue(
         initialValue.replace(/[^0-9]*/g, '')
@@ -112,11 +106,11 @@ export class AppComponent {
         event.stopPropagation();
       }
       if (this.cardForm.controls['number'].value.length >= 15) {
-        let value = this.cardForm.controls['number'].value
+        const value = this.cardForm.controls['number'].value
           .split('')
-          .map((val) => Number(val));
-        let sum: Number = value.reduce(
-          (sum, val, i) =>
+          .map((val: string) => +val);
+        const sum: number = value.reduce(
+          (sum: number, val: number, i: number) =>
             i < value.length - 1
               ? i % 2 === 0
                 ? sum + val
@@ -132,7 +126,7 @@ export class AppComponent {
       }
     }
     // expiration format and validation
-    if (event.target.id === 'expiration-date') {
+    if (event.target.id === 'expirationDate') {
       const initialValue = this.cardForm.value.expirationDate;
       if (
         initialValue.length === 5 &&
@@ -167,7 +161,7 @@ export class AppComponent {
       }
     }
     // zipcode validation
-    if (event.target.id === 'billing-zipcode') {
+    if (event.target.id === 'zipcode') {
       const initialValue = this.cardForm.value.zipcode;
       if (
         initialValue.length === 6 &&
@@ -190,7 +184,7 @@ export class AppComponent {
     }
   }
 
-  onGoBackClciked(event) {
+  onGoBackClciked(_) {
     this.page = 0;
   }
 
