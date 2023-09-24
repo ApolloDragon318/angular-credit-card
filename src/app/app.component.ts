@@ -212,7 +212,10 @@ export class AppComponent {
   }
 
   get cardHolderFirstName() {
-    return this.cardForm.controls['firstName'].value || 'Your Name';
+    return (
+      this.cardForm.controls['firstName'].value ||
+      (!this.cardForm.controls['lastName'].value ? 'Your Name' : '')
+    );
   }
 
   get cardHolderLastName() {
